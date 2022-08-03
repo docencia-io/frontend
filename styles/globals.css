@@ -1,21 +1,56 @@
 * {
-    font-family: Roboto, sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 .navbar {
     padding-left: 2%;
+    padding-right: 4%;
+}
+.navbar-logout-icon {
+    margin-right: 8px;
+    font-size: 20px;
+}
+.logout-icon {
+    color: white;
+    font-size: 25px;
 }
 .container-page {
     padding-top: 2%;
     padding-left: 10%;
     padding-right: 10%;
-    background-color: #f5f6f7;
+    height: 100%;
+}
+.content {
+    padding-top: 10px;
 }
 .breadcrumb {
     font-size: 0.707rem;
+    text-transform: uppercase;
 }
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    background-color: #f5f6f7;
+}
+h1 {
+    margin: 0;
+}
+
 a:hover,
 a:visited,
 a:link,
 a:active {
     text-decoration: none;
+}
+@media screen and (min-width: 991px) {
+    .nav-logout {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .logout {
+        display: none;
+    }
 }

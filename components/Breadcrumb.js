@@ -1,17 +1,29 @@
+import { useRouter } from "next/router";
+import { pathMapper } from "../utils/pathMapper";
+
 export default function Breadcrumb() {
+    const router = useRouter();
+    const { pathname } = router;
+    const paths = pathname.split("/");
     return (
         <div>
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item">
                         <a href="/">INICIO</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                        PERFIL
-                    </li>
+                    {paths.map((path, index) => {
+                        if (index > 0) {
+                            return (
+                                <li className="breadcrumb-item" key={index}>
+                                    {pathMapper[path] || path}
+                                </li>
+                            );
+                        }
+                    })}
                 </ol>
             </nav>
-            <h1 class="h2">Perfil</h1>
+            <h1 className="h2">{pathMapper[paths[1]]}</h1>
         </div>
     );
 }

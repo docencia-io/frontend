@@ -7,7 +7,7 @@ export default function Layout({ children }) {
             <Navbar />
             <main className="container-page">
                 <Breadcrumb />
-                <div>{children}</div>
+                <div className="content">{children}</div>
             </main>
         </>
     );
