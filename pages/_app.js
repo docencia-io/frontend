@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import "bootstrap/dist/css/bootstrap.css";
 import "../styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps }) {
     const router = useRouter();
@@ -11,9 +12,11 @@ function MyApp({ Component, pageProps }) {
     }, [router.events]);
 
     return (
-        <Layout>
-            <Component {...pageProps} />
-        </Layout>
+        <SessionProvider session={pageProps.session} refetchInterval={0}>
+            <Layout>
+                <Component {...pageProps} />
+            </Layout>
+        </SessionProvider>
     );
 }
 

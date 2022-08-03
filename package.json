@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "bootstrap": "^5.2.0",
-    "next": "12.2.3",
+    "bootstrap-icons": "^1.9.1",
+    "next": "latest",
+    "next-auth": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0"
