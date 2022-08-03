@@ -1,3 +1,5 @@
+import Login from './login-btn';
+
 export default function Navbar() {
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,9 +39,8 @@ export default function Navbar() {
                     </a>
                 </div>
             </div>
-            <div>
-                Estoyt aca
-                <i className="bi bi-github"></i>
+            <div className="text-light">
+                    <Login />
             </div>
         </nav>
     );

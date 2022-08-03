@@ -12,7 +12,8 @@
     "@fontsource/roboto": "^4.5.7",
     "bootstrap": "^5.2.0",
     "bootstrap-icons": "^1.9.1",
-    "next": "12.2.3",
+    "next": "latest",
+    "next-auth": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
