@@ -14,8 +14,10 @@
     "next": "latest",
     "next-auth": "latest",
     "react": "18.2.0",
+    "react-ace": "^10.1.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "react-iframe": "^1.8.0"
   },
   "devDependencies": {
     "eslint": "8.21.0",

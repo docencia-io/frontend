@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
     }, [router.events]);
 
     return (
-        <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <SessionProvider basePath="/app/api/auth" session={pageProps.session} refetchInterval={0}>
             <Layout>
                 <Component {...pageProps} />
             </Layout>
