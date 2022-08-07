@@ -31,7 +31,7 @@ export default function Navbar() {
                     <div className="collapse navbar-collapse" id="navbarsExample01">
                         <div className="navbar-nav">
                             {Object.keys(pathMapper).map((key) => (
-                                <a className={`nav-item nav-link ${isActive(key) ? "active" : ""}`} href={`/app/${key}`} key={key}>
+                                <a className={`nav-item nav-link ${isActive(key) ? "active" : ""}`} href={`/${key}`} key={key}>
                                     {pathMapper[key]}
                                 </a>
                             ))}

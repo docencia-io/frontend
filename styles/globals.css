@@ -39,7 +39,8 @@
     height: 100%;
 }
 .content {
-    padding-top: 10px;
+    padding-top: 0px;
+    height:100vh; 
 }
 .breadcrumb {
     font-size: 0.707rem;
@@ -63,18 +64,25 @@ a:active {
     text-decoration: none;
 }
 
-
-
-
-.sidebar-left {
-    min-width: 200px;
-    max-width: 200px;
-    position: static;
-    
-
+#hoola{
+    margin-left: 248px;
+    height:100vh; 
+    margin-right: 0;
 }
-
-
+.sidebar-left{ 
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 250px;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #37474F;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    height:100vh; 
+}
 
 @media screen and (min-width: 991px) {
     .nav-logout {

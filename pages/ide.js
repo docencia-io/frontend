@@ -20,7 +20,7 @@ export default function IDE() {
             <LeftBar  Lang={lang} Coder={coder}/>
             <div className="mdk-drawer-layout__content" style={{ transform: 'translate3d(0px, 0px, 0px)' }}>
                 {url != "" || err!="" ? <RunCode url={url} err={err}/>: null}
-                <Ide Type={"csharp"} Code={code} Lang={lang} Coder={coder}/>
+                <Ide class="container-fluid" Type={"csharp"} Code={code} Lang={lang} Coder={coder}/>
             </div>
 
         </div>
