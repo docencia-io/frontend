@@ -1,54 +1,32 @@
 import React, { useState } from 'react';
-// import { Select,Checkbox } from 'antd';
-
 // import Admin from './adminBar';
 import { Langs } from './codes'
+// import { BsBoxArrowInRight, BsPersonCircle } from "react-icons/bs";
 
-
-
-function Bar({ Lang, Coder }) {
+export default function Bar({ Lang, Coder }) {
   const [code, setCode] = useState("Cpp");
-
   let handleChange = (value) => {
     setCode(value)
     Coder.changeLang(value)
   }
+  return <div className=" sidebar-left sidebar-dark o-hidden" style={{ "background": "#2c353c" }}>
 
+    <div className="sidebar-heading">Configuraciones</div>
+    <div id="sidebar-wrapper">
+      <ul className="sidebar-nav">
+        <li>
 
-
-  return <div className=" sidebar-left sidebar-dark o-hidden" data-perfect-scrollbar style={{ "background": "#2c353c" }}>
-     <div className="sidebar-p-y">
-      <div className="sidebar-heading">Configuraciones</div>
-      <ul className="sidebar-menu sm-active-button-bg">
-
-
-        <li className="sidebar-menu-item">
-          <a className="sidebar-menu-button" >
-            {/* <Select defaultValue="C++" value={Lang}  style={{ width: 120 }} onChange={handleChange}>
-                 {Langs.map((l,ix)=>{
-                        return   <Option selected={Lang==l.val}  value={l.val}>{l.name}</Option> 
-                    })}
-            </Select> */}
-          </a>
+          <select className="form-select form-select-sm mb-3 mt-3" aria-label=".form-select-lg example" style={{ "width": "150px", "marginLeft": "1.2rem" }}>
+            {Langs.map((lang, ix) => <option key={ix} value={lang.val}>{lang.name}</option>)}
+          </select>
         </li>
-        <li className="sidebar-menu-item">
-          <a className="sidebar-menu-button" onClick={() => { Coder.Exec() }} >
-            <i className="sidebar-menu-icon sidebar-menu-icon--left material-icons">play_circle_outline</i> Ejecutar
-          </a>
+        <li>
+          <a href="#">Ejecutar</a>
         </li>
-        <li className="sidebar-menu-item">
-          <a className="sidebar-menu-button" onClick={() => { Coder.Reset(code) }} >
-            <i className="sidebar-menu-icon sidebar-menu-icon--left material-icons">stop</i> Resetear
-          </a>
+        <li>
+          <a href="#">Restablecer</a>
         </li>
-
       </ul>
-
     </div>
-
-    
   </div>
 }
-
-
-export default Bar
