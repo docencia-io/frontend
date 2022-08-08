@@ -1,6 +1,6 @@
 export const pathMapper = {
     profile: "Perfil",
-    courses:"Cursos",
+    // courses:"Cursos",
     ide: "IDE",
     udpiler: "UDPiler",
     database: "Base de datos",

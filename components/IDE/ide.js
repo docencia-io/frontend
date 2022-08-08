@@ -24,12 +24,7 @@ export default function IDE({Code,Coder}) {
         width: undefined,
         height: undefined,
       });
-    const [render, setRender] = useState(false)
-    const AceEditor = dynamic(() => import("react-ace"), {
-        // Do not import in server side
-        ssr: false,
-      })
-  
+    const [render, setRender] = useState(false)  
   useEffect(() => {
     // only execute all the code below in client side
     if (typeof window !== 'undefined') {
@@ -54,8 +49,7 @@ export default function IDE({Code,Coder}) {
     }
   }, []); 
 
-    return <>
-    <AceEditor
+    return  <AceEditor
         placeholder="// Inserta tu codigo"
         mode="csharp"//Type(Lang)}
         theme="twilight"
@@ -69,7 +63,7 @@ export default function IDE({Code,Coder}) {
         height={windowSize.height}
         highlightActiveLine={true}
         
-       // value={Code}
+       value={Code}
        // onChange={(e)=>{Coder.Send(e)}}
         setOptions={{
             enableBasicAutocompletion: true,
@@ -78,5 +72,4 @@ export default function IDE({Code,Coder}) {
             showLineNumbers: true,
             tabSize: 2,
         }} />
-        </>
 }
