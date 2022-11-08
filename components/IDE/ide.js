@@ -4,22 +4,29 @@ import { useState, useEffect } from 'react';
 import dynamic from "next/dynamic"
 import { useSession} from "next-auth/react";
 
-const AceEditor = dynamic(() => import("react-ace"), {
-    // Do not import in server side
+const Ace = dynamic(
+    async () => {
+      const ace = await import('react-ace');
+      require('ace-builds/src-noconflict/mode-mysql');
+      require('ace-builds/src-noconflict/mode-csharp');
+      require('ace-builds/src-noconflict/theme-twilight');
+      require('ace-builds/src-noconflict/theme-github');
+      require('ace-builds/src-noconflict/mode-python');
+      require('ace-builds/src-noconflict/mode-java');
+      require('ace-builds/src-noconflict/mode-golang');
+      return ace;
+    },
+  {
+    loading: () => (
+      <>Loading...</>
+    ),
     ssr: false,
-})
-
-
-// import "ace-builds/src-noconflict/mode-csharp";
-// import "ace-builds/src-noconflict/mode-python";
-// import "ace-builds/src-noconflict/mode-java";
-// import "ace-builds/src-noconflict/mode-golang";
-// import "ace-builds/src-noconflict/mode-mysql";
-// import "ace-builds/src-noconflict/theme-twilight";
+  })
 
 export default function IDE({Code,Coder}) {
-    const { data, status } = useSession();
+    const { data } = useSession();
 
+    
     const [windowSize, setWindowSize] = useState({
         width: undefined,
         height: undefined,
@@ -49,27 +56,30 @@ export default function IDE({Code,Coder}) {
     }
   }, []); 
 
-    return  <AceEditor
+    return  <Ace
         placeholder="// Inserta tu codigo"
-        mode="csharp"//Type(Lang)}
-        theme="twilight"
+        mode="csharp"  
+        theme="github"
         name="hoola"
+      
         // onLoad={this.onLoad}
         // onChange={this.onChange}
         fontSize={14}
         showPrintMargin={true}
         showGutter={true}
-        width={windowSize.width}
+        // width={windowSize.width}
+        width="auto"
         height={windowSize.height}
         highlightActiveLine={true}
         
        value={Code}
-       // onChange={(e)=>{Coder.Send(e)}}
+       onChange={(e)=>{Coder.Send(e)}}
         setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
             enableSnippets: true,
             showLineNumbers: true,
+          //  fontFamily: "monospace",
             tabSize: 2,
         }} />
 }

@@ -1,5 +1,10 @@
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 import {TypeCode,Type} from './codes'
+
+
+
+
+
 // import {Api,GenerateUUID } from '../core/ensena'
 
 const ENDPOINT = "https://ws-ide.xn--ensea-rta.cl";
@@ -60,7 +65,10 @@ export default class Coder {
     this.setErr= OBJ.setErr
     this.setURL= OBJ.setURL
     this.code = OBJ.code
+    this.repository= OBJ.repository
+    this.setRepository= OBJ.setRepository
     sync[this.user] = this
+    this.name = ""
     // socket.emit('SEND',{uuid,id:this.user,sync:true})
    
       
@@ -71,9 +79,9 @@ export default class Coder {
 
     }
     setLang(lang){
-
+        this.lang = lang
+        console.log("LANG",lang)
     }
-
     Reset(c){
         let code = TypeCode(c)
         this.setCode(code)
@@ -86,7 +94,37 @@ export default class Coder {
         
 
     }
+   async Save(name){
+      const dataPost = {
+        content: this.code,
+        file : name,
+        projectID: this.repository.projectID
+       }
+
+       let repository = this.repository
+       repository.file = name
+       this.setRepository(repository)
+   
+       // Send the data to the server in JSON format.
+       const JSONdata = JSON.stringify(dataPost)
+       // Form the request for sending data to the server.
+       const options = {
+         // The method is POST because we are sending data.
+         method: 'POST',
+         // Tell the server we're sending JSON.
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         // Body of the request is the JSON data we created above.
+         body: JSONdata,
+       }
+       const response = await fetch('/app/api/gitlab/push', options)
+       const result = await response.json()
+
+      
+    }
     changeLang(lang){
+        console.log("LANG",lang)
         this.setLang(lang)
         this.emit(this.code,lang)
     }
@@ -110,49 +148,40 @@ export default class Coder {
         }
     }
 
-    Exec(){
-        
-
-        let compiler = new Api("compiler/" + this.lang.toLowerCase())
-        compiler.SetDomain("https://ide.xn--ensea-rta.cl/")
-        if (this.lang.toLowerCase() =="sql"){
-            compiler.SetDomain("https://ide-db.xn--ensea-rta.cl/")
-        }
-        let msg = {
-            "Name": "",
-            "File": this.code
-        }
-
-        compiler.new(msg).then(data => {
-            if (data.Error == true) {
-                this.setErr(data.MSG)
-                return
-            } 
-            this.setErr("")
-            this.setURL("")
-            switch (this.lang) {
-                case "Python":
-                    this.setURL("https://ide.xn--ensea-rta.cl/PYTHON/?session=" + data.Path)
-                    break;
-                case "Java":
-                    this.setURL("https://ide.xn--ensea-rta.cl/JAVA/?session=" + data.Path)
-                    break;
-                case "SQL":
-                    this.setURL("https://ide-db.xn--ensea-rta.cl/SQL/?session=" + data.Path)
-                    break;
-                case "Golang":
-                    this.setURL("https://ide.xn--ensea-rta.cl/GOLANG/?session=" + data.Path)
-                    break;
-                default:
-                    this.setURL("https://ide.xn--ensea-rta.cl/CPP/?session=" + data.Path);
-            }
-        
-
-        }).catch((data)=>{
-            this.setErr("Error en nuestro servidores ")
-
+    async Exec(){
+    const dataPost = {
+        lang: this.lang,
+        code: this.code
+      }
+        const JSONdata = JSON.stringify(dataPost)
+  
+      const endpoint = '/app/api/compiler'
+        const options = {
+        method: 'POST',   
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSONdata,
+      }
+      const response = await fetch(endpoint, options)
+      const result = await response.json()
+      //setMessage(result.message)
+      if (result.error) {
+        this.setURL("");
+        this.setErr(result.message);
+        return 
+      }
+      this.setErr("");
+      this.setURL(result.url);
+      if (this.repository.file !="" ){
+        this.name = this.repository.file
+        let name_file = this.repository.file 
+        Coder.setRepository({
+          owner: this.repository.owner,
+          file: name_file,
+          projectID: this.repository.projectID,
         })
-
+        this.Save(name_file)
+      }
     }
-
   }
