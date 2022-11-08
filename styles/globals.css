@@ -1,7 +1,8 @@
-* {
+/* * {
     font-family: "Roboto", sans-serif;
-}
+} */
 .navbar {
+    font-family: "Roboto", sans-serif;
     padding-left: 2%;
     padding-right: 2%;
 }
@@ -52,6 +53,7 @@ body {
     margin: 0;
     height: 100%;
     background-color: #f5f6f7;
+    font-family: "Roboto", sans-serif;
 }
 h1 {
     margin: 0;
@@ -81,6 +83,9 @@ a:active {
     color: #f0f0f0 !important;
 }
 
+.editor-icon{
+ margin-right: 5px;   
+}
 
 .sidebar-left{ 
     z-index: 1000;
@@ -161,3 +166,6 @@ a:active {
     }
 }
 
+#myId2 {
+    margin-left: 250px;
+}

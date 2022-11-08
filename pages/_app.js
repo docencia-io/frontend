@@ -5,14 +5,16 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 
+
 function MyApp({ Component, pageProps }) {
     const router = useRouter();
+
     useEffect(() => {
         typeof document !== undefined ? require("bootstrap/dist/js/bootstrap") : null;
     }, [router.events]);
 
     return (
-        <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <SessionProvider session={pageProps.session} refetchInterval={0}  basePath="/app/api/auth" >
             <Layout>
                 <Component {...pageProps} />
             </Layout>

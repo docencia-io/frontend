@@ -1,8 +1,12 @@
 export const pathMapper = {
-    profile: "Perfil",
+    // profile: "Perfil",
     // courses:"Cursos",
+    salas: "Salas",
     ide: "IDE",
-    udpiler: "UDPiler",
+     udpiler: "UDPiler",
     database: "Base de datos",
     server: "Servidor",
+    // faq: "FAQ",
 };
+
+

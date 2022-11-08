@@ -1,20 +1,78 @@
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import Image from 'next/image'
 export default function Profile() {
-    return <div>
-        <div className="row gutters-sm">
-        <div className="col-md-4 mb-3">
-          <div className="card">
-            <div className="card-body">
-              <div className="d-flex flex-column align-items-center text-center">
-                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width={150} />
-                <div className="mt-3">
-                  <h4>John Doe</h4>
-                  <p className="text-secondary mb-1">Full Stack Developer</p>
-                  <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                </div>
+  const { data } = useSession();
+  const [update, setUpdate] = useState(null);
+  const [message, setMessage] = useState(null);
+
+  const handleSubmit = async (event) => {
+    // Stop the form from submitting and refreshing the page.
+    event.preventDefault()
+
+
+    if (event.target.password.value != event.target.confirm_password.value) {
+      setUpdate("error")
+      setMessage("Las contraseñas no coinciden")
+      return
+    }
+
+    // Get data from the form.
+    const dataPost = {
+      email: data.user.email,
+      password: event.target.password.value,
+    }
+
+    // Send the data to the server in JSON format.
+    const JSONdata = JSON.stringify(dataPost)
+
+    // API endpoint where we send form data.
+    const endpoint = '/app/api/profile'
+
+    // Form the request for sending data to the server.
+    const options = {
+      // The method is POST because we are sending data.
+      method: 'POST',
+      // Tell the server we're sending JSON.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Body of the request is the JSON data we created above.
+      body: JSONdata,
+    }
+
+    // Send the form data to our forms API on Vercel and get a response.
+    const response = await fetch(endpoint, options)
+
+    // Get the response data from server as JSON.
+    // If server returns the name submitted, that means the form works.
+    const result = await response.json()
+console.log(result)
+    setMessage(result.message)
+    if (result.error) {
+      setUpdate("error")
+    }
+    setUpdate("success")
+
+  }
+
+
+  return <div>
+    <div className="row gutters-sm">
+      <div className="col-md-4 mb-3">
+        <div className="card">
+          <div className="card-body">
+            <div className="d-flex flex-column align-items-center text-center">
+              <Image src="/app/avatar.png" alt="Admin" className="rounded-circle" width={"150px"} height={"150px"}/>
+              <div className="mt-3">
+                <h4>{data.user.name}</h4>
+                {/* <p className="text-secondary mb-1">Full Stack Developer</p>
+                  <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p> */}
               </div>
             </div>
           </div>
-          {/* <div className="card mt-3">
+        </div>
+        {/* <div className="card mt-3">
             <ul className="list-group list-group-flush">
               <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 <h6 className="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-globe mr-2 icon-inline"><circle cx={12} cy={12} r={10} /><line x1={2} y1={12} x2={22} y2={12} /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>Website</h6>
@@ -38,25 +96,44 @@ export default function Profile() {
               </li>
             </ul>
           </div> */}
-        </div>
-        <div className="col-md-8">
-          <div className="card mb-3">
+      </div>
+      <div className="col-md-8">
+
+        <div className="card mb-3">
+          {update == "success" ? <div className="alert alert-success" role="alert">
+            {message}
+          </div> : null}
+
+          {update == "error" ? <div className="alert alert-danger" role="alert">
+            {message}
+          </div> : null}
+
+          <form onSubmit={handleSubmit}>
             <div className="card-body">
-              <div className="row">
+            <div className="row">
                 <div className="col-sm-3">
-                  <h6 className="mb-0">Nombre</h6>
+                  <h6 className="mb-0">Username</h6>
                 </div>
                 <div className="col-sm-9 text-secondary">
-                  Kenneth
+                  {data.Username}
                 </div>
               </div>
               <hr />
               <div className="row">
                 <div className="col-sm-3">
-                  <h6 className="mb-0">Apellido</h6>
+                  <h6 className="mb-0">Nombres</h6>
                 </div>
                 <div className="col-sm-9 text-secondary">
-                Valdez
+                  {data.Me.name}
+                </div>
+              </div>
+              <hr />
+              <div className="row">
+                <div className="col-sm-3">
+                  <h6 className="mb-0">Apellidos</h6>
+                </div>
+                <div className="col-sm-9 text-secondary">
+                  {data.Me.lastname}
                 </div>
               </div>
               <hr />
@@ -65,7 +142,7 @@ export default function Profile() {
                   <h6 className="mb-0">Email</h6>
                 </div>
                 <div className="col-sm-9 text-secondary">
-                fip@jukmuh.al
+                  {data.Me.email}
                 </div>
               </div>
               <hr />
@@ -74,18 +151,33 @@ export default function Profile() {
                   <h6 className="mb-0">Contraseña</h6>
                 </div>
                 <div className="col-sm-9 text-secondary">
-                <input type="password" className="form-control" id="inputPassword" />
+                  <input type="password" className="form-control" name="password" id="inputPassword" />
                 </div>
               </div>
               <hr />
+              <div className="row d-flex align-items-center">
+                <div className="col-sm-3">
+                  <h6 className="mb-0">Confirmar Contraseña</h6>
+                </div>
+                <div className="col-sm-9 text-secondary">
+                  <input type="password" className="form-control" name="confirm_password" id="inputPassword" />
+                </div>
+              </div>
+              <hr />
+
               <div className="row">
                 <div className="col-sm-12">
-                  <a className="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                  <button className="btn btn-info " type="submit" >Actualizar</button>
                 </div>
               </div>
             </div>
-          </div>
-        </div></div>
-    </div>;
-    
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>;
+
 }

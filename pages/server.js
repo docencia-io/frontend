@@ -1,20 +1,8 @@
-import Iframe from 'react-iframe'
-import { useEffect, useState } from 'react';
-export default function IDE() {
-    const [height, setHeight] = useState(0)
-    const handleWindowResize = () => {
-        setHeight(window.innerHeight - 80);
-    }
-    useEffect(() => {
-        handleWindowResize();
-        window.addEventListener('resize', handleWindowResize);
-        return () => window.removeEventListener('resize', handleWindowResize);
-    }, []);
-    return <Iframe url="https://db.xn--ensea-rta.cl/"
-        width="100%"
-        height={height + "px"}
-        id="myId"
-        className="myClassname"
-        display="initial"
-        position="flex" />;
+
+import Iframe from  '../components/iframe'
+import { useSession } from "next-auth/react";
+
+export default function Server() {
+    const { data } = useSession();
+    return <Iframe url={"https://ssh-udp.docencia.io/?session="+data.Me.token}/>
 }

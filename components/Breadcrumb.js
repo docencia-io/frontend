@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { pathMapper } from "../utils/pathMapper";
+import Link from 'next/link'
 
 export default function Breadcrumb() {
     const router = useRouter();
@@ -10,7 +11,7 @@ export default function Breadcrumb() {
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item">
-                        <a href="/">INICIO</a>
+                        <Link href="/">INICIO</Link>
                     </li>
                     {paths.map((path, index) => {
                         if (index > 0) {
